@@ -1,5 +1,7 @@
 package br.edu.up;
 
+import br.edu.up.controller.ReservaController;
+import br.edu.up.dao.ReservaDAO;
 import br.edu.up.view.DeliveryView;
 import br.edu.up.view.PedidoView;
 import br.edu.up.view.ProdutoView;
@@ -17,6 +19,10 @@ public class Main {
         ProdutoView produtoView = new ProdutoView();
         ReservaView reservaView = new ReservaView();
 
+        // Adicionando instância ReservaController
+        ReservaDAO reservaDAO = new ReservaDAO();
+        ReservaController reservaController = new ReservaController(reservaDAO, reservaView);
+
         do {
             System.out.println("=== Menu Principal ===");
             System.out.println("1. Cadastro de Produtos");
@@ -26,14 +32,14 @@ public class Main {
             System.out.println("5. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Consumir a quebra de linha
+            scanner.nextLine(); 
 
             switch (opcao) {
                 case 1:
                     produtoView.adicionarProduto();
                     break;
                 case 2:
-                    reservaView.adicionarReserva();
+                    reservaController.adicionarReserva(); // Chamando o método do controller
                     break;
                 case 3:
                     pedidoView.adicionarPedido();

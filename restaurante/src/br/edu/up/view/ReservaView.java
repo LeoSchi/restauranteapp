@@ -1,40 +1,54 @@
 package br.edu.up.view;
 
-import br.edu.up.controller.ReservaController;
-import br.edu.up.model.Reserva;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
+import br.edu.up.model.Reserva;
+
 public class ReservaView {
-    private Scanner scanner = new Scanner(System.in);
-    private ReservaController reservaController = new ReservaController();
+    private Scanner scanner;
 
-    public void adicionarReserva() {
-        System.out.println("Digite a data da reserva (dd/MM/yyyy):");
-        String dataStr = scanner.nextLine();
-        Date data;
-        try {
-            data = new SimpleDateFormat("dd/MM/yyyy").parse(dataStr);
-        } catch (ParseException e) {
-            System.out.println("Formato de data inválido.");
-            return;
-        }
-
-        System.out.println("Digite o nome do cliente:");
-        String nomeCliente = scanner.nextLine();
-        System.out.println("Digite o número de pessoas:");
-        int numeroPessoas = scanner.nextInt();
-        scanner.nextLine(); // Consumir a quebra de linha
-
-        Reserva reserva = new Reserva(data, nomeCliente, numeroPessoas);
-        reservaController.adicionarReserva(reserva);
-        System.out.println("Reserva adicionada com sucesso!");
+    public ReservaView() {
+        scanner = new Scanner(System.in);
     }
 
-    // Implementa métodos adicionales según sea necesario
-}
+    public int mostrarMenu() {
+        System.out.println("\nMenu de Reservas:");
+        System.out.println("1. Fazer Reserva");
+        System.out.println("2. Cancelar Reserva");
+        System.out.println("3. Ver Reservas");
+        System.out.println("4. Sair");
+        System.out.print("Escolha uma opção: ");
+        return scanner.nextInt();
+    }
 
-//commit fix
+    public void showReservas(List<Reserva> reservas) {
+        if (reservas.isEmpty()) {
+            System.out.println("Nenhuma reserva encontrada.");
+        } else {
+            for (Reserva reserva : reservas) {
+                System.out.println("Cliente: " + reserva.getNomeCliente() +
+                                   ", Data: " + reserva.getData() +
+                                   ", Nº de Pessoas: " + reserva.getNumeroPessoas());
+            }
+        }
+    }
+
+    public Reserva getReservaDetails() {
+        scanner.nextLine(); 
+        System.out.println("Digite o nome do cliente:");
+        String nomeCliente = scanner.nextLine();
+        System.out.println("Digite a data (DD/MM/AAAA):");
+        String data = scanner.nextLine();
+        System.out.println("Digite o número de pessoas:");
+        int numeroPessoas = scanner.nextInt();
+        scanner.nextLine();
+        return new Reserva(nomeCliente, data, numeroPessoas);
+    }
+
+    public String getNomeCliente() {
+        scanner.nextLine();
+        System.out.println("Digite o nome do cliente para cancelar a reserva:");
+        return scanner.nextLine();
+    }
+}

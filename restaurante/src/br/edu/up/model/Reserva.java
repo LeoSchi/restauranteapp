@@ -1,40 +1,35 @@
 package br.edu.up.model;
 
-import java.util.Date;
-
 public class Reserva {
-    private Date data;
     private String nomeCliente;
+    private String data;
     private int numeroPessoas;
 
-    public Reserva(Date data, String nomeCliente, int numeroPessoas) {
-        this.data = data;
+    public Reserva(String nomeCliente, String data, int numeroPessoas) {
         this.nomeCliente = nomeCliente;
-        this.numeroPessoas = numeroPessoas;
-    }
-
-    public Date getData() {
-        return data;
-    }
-
-    public void setData(Date data) {
         this.data = data;
+        this.numeroPessoas = numeroPessoas;
     }
 
     public String getNomeCliente() {
         return nomeCliente;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
+    public String getData() {
+        return data;
     }
 
     public int getNumeroPessoas() {
         return numeroPessoas;
     }
 
-    public void setNumeroPessoas(int numeroPessoas) {
-        this.numeroPessoas = numeroPessoas;
+    @Override
+    public String toString() {
+        return nomeCliente + ";" + data + ";" + numeroPessoas;
     }
 
+    public static Reserva fromString(String linha) {
+        String[] partes = linha.split(";");
+        return new Reserva(partes[0], partes[1], Integer.parseInt(partes[2]));
+    }
 }

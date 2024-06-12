@@ -1,47 +1,47 @@
 package br.edu.up.dao;
 
-import br.edu.up.model.Reserva;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservaDAO implements DAO<Reserva> {
-    private List<Reserva> reservas = new ArrayList<>();
+import br.edu.up.model.Reserva;
 
-    @Override
-    public void adicionar(Reserva reserva) {
-        reservas.add(reserva);
-    }
+public class ReservaDAO {
+    private static final String FILE_NAME = "reservas.txt";
 
-    @Override
-    public Reserva buscar(String nomeCliente) {
-        for (Reserva r : reservas) {
-            if (r.getNomeCliente().equals(nomeCliente)) {
-                return r;
+    public List<Reserva> getAllReservas() {
+        List<Reserva> reservas = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                reservas.add(Reserva.fromString(linha));
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return null;
+        return reservas;
     }
 
-    @Override
-    public List<Reserva> listar() {
-        return new ArrayList<>(reservas);
-    }
-
-    @Override
-    public void atualizar(Reserva reserva) {
-        Reserva existente = buscar(reserva.getNomeCliente());
-        if (existente != null) {
-            existente.setData(reserva.getData());
-            existente.setNomeCliente(reserva.getNomeCliente());
-            existente.setNumeroPessoas(reserva.getNumeroPessoas());
+    public void addReserva(Reserva reserva) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            bw.write(reserva.toString());
+            bw.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    @Override
-    public void remover(String nomeCliente) {
-        Reserva reserva = buscar(nomeCliente);
-        if (reserva != null) {
-            reservas.remove(reserva);
+    public void removeReserva(String nomeCliente) {
+        List<Reserva> reservas = getAllReservas();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            for (Reserva reserva : reservas) {
+                if (!reserva.getNomeCliente().equalsIgnoreCase(nomeCliente)) {
+                    bw.write(reserva.toString());
+                    bw.newLine();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
