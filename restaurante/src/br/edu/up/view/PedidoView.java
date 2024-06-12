@@ -12,6 +12,20 @@ public class PedidoView {
     private Scanner scanner = new Scanner(System.in);
     private PedidoController pedidoController = new PedidoController();
     private ProdutoView produtoView = new ProdutoView(); // Utilizado para seleccionar productos
+    do{
+        System.out.println("=== Menu Principal ===");
+        System.out.print("Escolha uma opção: ");
+        System.out.println("1.Escolher pedido");
+        System.out.println("2. Deletar pedido");
+        System.out.println("3. Calcular o total");
+        System.out.println("4. Sair");
+        opcao = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (opcao){
+            
+        }
+    }
 
     public void adicionarPedido() {
         List<Produto> produtos = new ArrayList<>();
