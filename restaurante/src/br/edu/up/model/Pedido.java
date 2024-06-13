@@ -39,4 +39,12 @@ public class Pedido {
         this.id = id;
     }
 
+    public double calcularTotal(){
+        double total = 0;
+        for(Produto produto: produtos){
+            total = total + produto.getPreco();
+        }
+        return total;
+    }
+
 }

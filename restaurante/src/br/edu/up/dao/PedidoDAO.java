@@ -1,46 +1,42 @@
 package br.edu.up.dao;
 
 import br.edu.up.model.Pedido;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class PedidoDAO implements DAO<Pedido> {
+public class PedidoDAO {
     private List<Pedido> pedidos = new ArrayList<>();
+    private int nextId = 1;
 
-    @Override
     public void adicionar(Pedido pedido) {
+        pedido.setId(nextId++);
         pedidos.add(pedido);
     }
 
-    @Override
-    public Pedido buscar(String id) {
-        for (Pedido p : pedidos) {
-            if (p.getId().equals(id)) { 
-                return p;
+    public void remover(int id) {
+        pedidos.removeIf(p -> p.getId() == Id);
+    }
+
+    public void atualizar(Pedido pedido) {
+        for (int i = 0; i < pedidos.size(); i++) {
+            if (pedidos.get(i).getId() == pedido.getId()) {
+                pedidos.set(i, pedido);
+                return;
+            }
+        }
+    }
+
+    public Pedido obter(int id) {
+        for (Pedido pedido : pedidos) {
+            if (pedido.getId() == Id) {
+                return pedido;
             }
         }
         return null;
     }
 
-    @Override
     public List<Pedido> listar() {
         return new ArrayList<>(pedidos);
-    }
-
-    @Override
-    public void atualizar(Pedido pedido) {
-        Pedido existente = buscar(pedido.getId());
-        if (existente != null) {
-            existente.setProdutos(pedido.getProdutos());
-            existente.setTotal(pedido.getTotal());
-        }
-    }
-
-    @Override
-    public void remover(String id) {
-        Pedido pedido = buscar(id);
-        if (pedido != null) {
-            pedidos.remove(pedido);
-        }
     }
 }
